@@ -37,6 +37,22 @@ export function SplitForm({ senderAddress, onPaid }: Props) {
     }
   }
 
+  function horizonErrorToTurkish(e: unknown): string {
+    if (e instanceof Error) {
+      if (e.message === "SIGN_CANCELLED") return "İşlem iptal edildi.";
+      if (
+        e.message === "HORIZON:tx_insufficient_balance" ||
+        e.message === "HORIZON:op_underfunded"
+      )
+        return "Yetersiz bakiye.";
+      if (e.message === "HORIZON:op_no_destination")
+        return "Alıcı hesabı testnet'te bulunamadı (fonlanmamış olabilir).";
+      if (e.message.startsWith("HORIZON:"))
+        return "İşlem reddedildi: " + e.message.slice("HORIZON:".length);
+    }
+    return "İşlem gönderilemedi. Bakiyenizi ve adresi kontrol edin.";
+  }
+
   async function handleSend() {
     setCalcError(null);
     if (!isValidAddress(destination)) {
@@ -68,11 +84,7 @@ export function SplitForm({ senderAddress, onPaid }: Props) {
       onPaid();
     } catch (e) {
       setTxState("error");
-      setTxMessage(
-        e instanceof Error && e.message === "SIGN_CANCELLED"
-          ? "İşlem iptal edildi."
-          : "İşlem gönderilemedi. Bakiyenizi ve adresi kontrol edin."
-      );
+      setTxMessage(horizonErrorToTurkish(e));
     }
   }
 

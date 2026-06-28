@@ -35,6 +35,7 @@ export function useWallet() {
     setStatus("connecting");
     try {
       const addr = await connectWallet();
+      if (sessionRef.current !== session) return;
       setAddress(addr);
       await loadBalance(addr, session);
     } catch (e) {

@@ -13,7 +13,7 @@ describe("isValidAddress", () => {
   });
   it("rejects a secret key", () => {
     expect(
-      isValidAddress("SAOKEM6XUZP3ZBPKZWZ5K3W2E6QZJ6RZ6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q6Q")
+      isValidAddress("SDLERDBI4XKAZWZN3AB2CXOWX7DGY3M6KAYZNUYDS3OYM3YVZ7K3FWJ7")
     ).toBe(false);
   });
 });

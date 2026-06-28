@@ -10,7 +10,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100">
       <div className="mx-auto max-w-md space-y-5 p-6">
-        <header className="flex items-center justify-between">
+        <header className="flex items-center">
           <h1 className="text-xl font-bold">Stellar Hesap Bölüştürme</h1>
         </header>
 

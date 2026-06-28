@@ -53,6 +53,22 @@ export async function sendPayment(opts: {
 
   const signedXdr = await signXdr(tx.toXDR());
   const signedTx = TransactionBuilder.fromXDR(signedXdr, Networks.TESTNET);
-  const result = await server.submitTransaction(signedTx);
-  return result.hash;
+  try {
+    const result = await server.submitTransaction(signedTx);
+    return result.hash;
+  } catch (e: unknown) {
+    const codes =
+      e && typeof e === "object"
+        ? (e as { response?: { data?: { extras?: { result_codes?: { transaction?: string; operations?: string[] } } } } })
+            .response?.data?.extras?.result_codes
+        : undefined;
+    if (codes) {
+      const opCode = Array.isArray(codes.operations)
+        ? codes.operations.find((c) => c && c !== "op_success")
+        : undefined;
+      const reason = opCode || codes.transaction;
+      if (reason) throw new Error(`HORIZON:${reason}`);
+    }
+    throw e;
+  }
 }
