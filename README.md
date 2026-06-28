@@ -64,12 +64,16 @@ npm test        # birim testlerini çalıştır (Vitest)
 
 ## Ekran Görüntüleri
 
-> Ekran görüntüleri `docs/screenshots/` altında. (Aşağıdaki dosyaları kendi
-> testnet işleminden alıp ekle.)
+Testnet üzerinde 100 XLM ÷ 4 kişi = 25 XLM pay gönderimi akışı (`docs/screenshots/`):
 
-| Cüzdan bağlı | Bakiye gösterimi | Başarılı işlem |
+| # | Adım | Görüntü |
 |---|---|---|
-| ![Cüzdan bağlı](docs/screenshots/wallet-connected.png) | ![Bakiye](docs/screenshots/balance.png) | ![İşlem](docs/screenshots/transaction-success.png) |
+| 1 | Form dolduruldu (toplam, kişi sayısı, alıcı, tutar) | ![Form hazır](docs/screenshots/01-form-hazir.png) |
+| 2 | Freighter'da işlem onayı (Test Net) | ![Freighter imza](docs/screenshots/02-freighter-imza.png) |
+| 3 | İşlem ağa gönderiliyor | ![Gönderiliyor](docs/screenshots/03-gonderiliyor.png) |
+| 4 | Başarılı işlem ve tx hash | ![İşlem başarılı](docs/screenshots/04-islem-basarili.png) |
+| 5 | Gönderen hesap — bakiye azaldı (10.000 → 9.974,99 XLM + fee) | ![Gönderen bakiye](docs/screenshots/05-freighter-gonderen-bakiye.png) |
+| 6 | Alıcı hesap — bakiye arttı (+25 XLM, 10.025 XLM) | ![Alıcı bakiye](docs/screenshots/06-freighter-alici-bakiye.png) |
 
 ## Proje Yapısı
 
