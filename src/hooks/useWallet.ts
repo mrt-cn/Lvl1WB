@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { connectWallet } from "../lib/freighter";
 import { getBalance } from "../lib/stellar";
 
@@ -9,14 +9,17 @@ export function useWallet() {
   const [balance, setBalance] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
+  const sessionRef = useRef(0);
 
-  const loadBalance = useCallback(async (addr: string) => {
+  const loadBalance = useCallback(async (addr: string, session: number) => {
     setStatus("loading-balance");
     try {
       const bal = await getBalance(addr);
+      if (sessionRef.current !== session) return;
       setBalance(bal);
       setStatus("ready");
     } catch (e) {
+      if (sessionRef.current !== session) return;
       const msg =
         e instanceof Error && e.message === "ACCOUNT_NOT_FOUND"
           ? "Hesap testnet'te bulunamadı. Friendbot ile fonlayın."
@@ -27,12 +30,13 @@ export function useWallet() {
   }, []);
 
   const connect = useCallback(async () => {
+    const session = ++sessionRef.current;
     setError(null);
     setStatus("connecting");
     try {
       const addr = await connectWallet();
       setAddress(addr);
-      await loadBalance(addr);
+      await loadBalance(addr, session);
     } catch (e) {
       const msg =
         e instanceof Error && e.message === "NOT_INSTALLED"
@@ -44,6 +48,7 @@ export function useWallet() {
   }, [loadBalance]);
 
   const disconnect = useCallback(() => {
+    sessionRef.current += 1;
     setAddress(null);
     setBalance(null);
     setStatus("idle");
@@ -51,7 +56,10 @@ export function useWallet() {
   }, []);
 
   const refreshBalance = useCallback(async () => {
-    if (address) await loadBalance(address);
+    if (address) {
+      const session = ++sessionRef.current;
+      await loadBalance(address, session);
+    }
   }, [address, loadBalance]);
 
   return { address, balance, status, error, connect, disconnect, refreshBalance };
