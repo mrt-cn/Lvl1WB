@@ -1,12 +1,21 @@
 {
-  "enabledPlugins": {},
   "permissions": {
     "allow": [
       "Bash(git init *)",
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git branch *)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(git config *)",
+      "Bash(rm -f test.js index.html)",
+      "Bash(npm install *)",
+      "Bash(tasklist)",
+      "Bash(timeout 20 npm ping)",
+      "Bash(tasklist //v //fi \"imagename eq node.exe\")",
+      "Bash(npx tsc *)",
+      "Bash(echo \"TSC_DONE\\($?\\)\")",
+      "Bash(npm run *)"
     ]
-  }
+  },
+  "enabledPlugins": {}
 }
