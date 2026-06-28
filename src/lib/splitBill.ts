@@ -4,7 +4,7 @@ export interface SplitResult {
 }
 
 export function splitBill(total: number, people: number): SplitResult {
-  if (!(total > 0)) {
+  if (!Number.isFinite(total) || total <= 0) {
     return { perPerson: "0", error: "Toplam tutar 0'dan büyük olmalı." };
   }
   if (!Number.isInteger(people) || people < 1) {

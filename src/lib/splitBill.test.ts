@@ -9,8 +9,11 @@ describe("splitBill", () => {
     expect(splitBill(10, 3)).toEqual({ perPerson: "3.3333333", error: null });
   });
   it("rejects zero or negative total", () => {
-    expect(splitBill(0, 2).error).toBeTruthy();
+    expect(splitBill(0, 2)).toEqual({ perPerson: "0", error: "Toplam tutar 0'dan büyük olmalı." });
     expect(splitBill(-5, 2).error).toBeTruthy();
+  });
+  it("rejects non-finite total", () => {
+    expect(splitBill(Infinity, 2).error).toBeTruthy();
   });
   it("rejects fewer than 1 person", () => {
     expect(splitBill(100, 0).error).toBeTruthy();
